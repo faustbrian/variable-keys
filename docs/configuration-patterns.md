@@ -1,8 +1,3 @@
----
-title: Configuration Patterns
-description: Runtime model registration and configuration strategies for Variable Keys.
----
-
 Learn how to configure and manage variable key types using runtime registration for type safety and explicit model configuration.
 
 ## Runtime Registration

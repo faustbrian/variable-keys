@@ -1,8 +1,3 @@
----
-title: Primary Keys
-description: Use the variablePrimaryKey macro to create configurable primary key columns in Laravel migrations.
----
-
 The `variablePrimaryKey()` macro replaces verbose match expressions with a clean, type-safe method for creating primary key columns based on your application's configuration.
 
 ## Basic Usage

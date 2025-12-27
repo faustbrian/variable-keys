@@ -1,8 +1,3 @@
----
-title: API Reference
-description: Complete reference for all Variable Keys enums, macros, and methods.
----
-
 Complete API documentation for Variable Keys enums and Blueprint macros.
 
 ## Enums

@@ -1,8 +1,3 @@
----
-title: Getting Started
-description: Install and configure Variable Keys for clean, type-safe Laravel migrations with configurable primary keys and polymorphic relationships.
----
-
 Eliminate repetitive match expressions in your Laravel migrations with type-safe Blueprint macros for variable primary keys, foreign keys, and polymorphic relationships.
 
 ## Requirements

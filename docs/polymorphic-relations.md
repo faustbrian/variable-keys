@@ -1,8 +1,3 @@
----
-title: Polymorphic Relations
-description: Use the variableMorphs macro to create configurable polymorphic relationship columns in Laravel migrations.
----
-
 The `variableMorphs()` macro eliminates verbose match expressions when defining polymorphic relationship columns, making your migrations cleaner and type-safe.
 
 ## Basic Usage

@@ -1,8 +1,3 @@
----
-title: Foreign Keys
-description: Use the variableForeignKey macro to create type-matched foreign key columns in Laravel migrations.
----
-
 The `variableForeignKey()` macro creates foreign key columns that match your primary key type, eliminating the need for verbose match expressions.
 
 ## Basic Usage
