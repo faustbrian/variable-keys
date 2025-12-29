@@ -30,10 +30,8 @@ jobs:
                   php-version: '8.5'
                   coverage: pcov
                   tools: composer:v2
-            - name: Install Laravel ${{ matrix.laravel }}
-              run: |
-                  composer require "orchestra/testbench:${{ matrix.testbench }}" --dev --no-update --no-interaction
-                  composer update --prefer-dist --no-progress --no-interaction
+            - name: Install dependencies
+              run: composer install --no-progress --no-interaction --ignore-platform-reqs
             - run: vendor/bin/pest --coverage --min=90
 
     phpstan:
@@ -49,7 +47,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   tools: composer:v2
-            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: composer install --no-progress --ignore-platform-reqs ${{ matrix.composer-flags }}
             - run: vendor/bin/phpstan
 
     ecs:
@@ -65,7 +63,7 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   tools: composer:v2
-            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: composer install --no-progress --ignore-platform-reqs ${{ matrix.composer-flags }}
             - run: vendor/bin/ecs check
 
     rector:
@@ -81,5 +79,5 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   tools: composer:v2
-            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: composer install --no-progress --ignore-platform-reqs ${{ matrix.composer-flags }}
             - run: vendor/bin/rector --dry-run
