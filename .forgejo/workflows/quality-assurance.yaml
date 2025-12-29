@@ -1,85 +1,85 @@
 ---
 name: Quality Assurance
 on:
-  push:
-    branches: ['main']
-  pull_request: ~
+    push:
+        branches: ['main']
+    pull_request: ~
 
 jobs:
-  tests:
-    name: Tests (L${{ matrix.laravel }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        laravel: ['10', '11', '12']
-        include:
-          # Laravel 10
-          - laravel: '10'
-            testbench: '^8.0'
-          # Laravel 11
-          - laravel: '11'
-            testbench: '^9.0'
-          # Laravel 12
-          - laravel: '12'
-            testbench: '^10.0'
-    steps:
-      - uses: actions/checkout@v6
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.5'
-          coverage: ${{ matrix.laravel == '12' && 'pcov' || 'none' }}
-          tools: composer:v2
-      - name: Install Laravel ${{ matrix.laravel }}
-        run: |
-          composer require "orchestra/testbench:${{ matrix.testbench }}" --dev --no-update --no-interaction
-          composer update --prefer-dist --no-progress --no-interaction
-      - run: vendor/bin/pest --coverage --min=90
+    tests:
+        name: Tests (L${{ matrix.laravel }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                laravel: ['10', '11', '12']
+                include:
+                    # Laravel 10
+                    - laravel: '10'
+                      testbench: '^8.0'
+                    # Laravel 11
+                    - laravel: '11'
+                      testbench: '^9.0'
+                    # Laravel 12
+                    - laravel: '12'
+                      testbench: '^10.0'
+        steps:
+            - uses: https://github.com/actions/checkout@v6
+            - uses: https://github.com/shivammathur/setup-php@v2
+              with:
+                  php-version: '8.5'
+                  coverage: ${{ matrix.laravel == '12' && 'pcov' || 'none' }}
+                  tools: composer:v2
+            - name: Install Laravel ${{ matrix.laravel }}
+              run: |
+                  composer require "orchestra/testbench:${{ matrix.testbench }}" --dev --no-update --no-interaction
+                  composer update --prefer-dist --no-progress --no-interaction
+            - run: vendor/bin/pest --coverage --min=90
 
-  phpstan:
-    name: PHPStan on ${{ matrix.php }} ${{ matrix.composer-flags }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: ['8.5']
-        composer-flags: ['']
-    steps:
-      - uses: actions/checkout@v6
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer:v2
-      - run: composer install --no-progress ${{ matrix.composer-flags }}
-      - run: vendor/bin/phpstan
+    phpstan:
+        name: PHPStan on ${{ matrix.php }} ${{ matrix.composer-flags }}
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: ['8.5']
+                composer-flags: ['']
+        steps:
+            - uses: https://github.com/actions/checkout@v6
+            - uses: https://github.com/shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  tools: composer:v2
+            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: vendor/bin/phpstan
 
-  ecs:
-    name: Code Style on ${{ matrix.php }} ${{ matrix.composer-flags }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: ['8.5']
-        composer-flags: ['']
-    steps:
-      - uses: actions/checkout@v6
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer:v2
-      - run: composer install --no-progress ${{ matrix.composer-flags }}
-      - run: vendor/bin/ecs check
+    ecs:
+        name: Code Style on ${{ matrix.php }} ${{ matrix.composer-flags }}
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: ['8.5']
+                composer-flags: ['']
+        steps:
+            - uses: https://github.com/actions/checkout@v6
+            - uses: https://github.com/shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  tools: composer:v2
+            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: vendor/bin/ecs check
 
-  rector:
-    name: Rector on ${{ matrix.php }} ${{ matrix.composer-flags }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: ['8.5']
-        composer-flags: ['']
-    steps:
-      - uses: actions/checkout@v6
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: composer:v2
-      - run: composer install --no-progress ${{ matrix.composer-flags }}
-      - run: vendor/bin/rector --dry-run
+    rector:
+        name: Rector on ${{ matrix.php }} ${{ matrix.composer-flags }}
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: ['8.5']
+                composer-flags: ['']
+        steps:
+            - uses: https://github.com/actions/checkout@v6
+            - uses: https://github.com/shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  tools: composer:v2
+            - run: composer install --no-progress ${{ matrix.composer-flags }}
+            - run: vendor/bin/rector --dry-run
