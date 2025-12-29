@@ -1,6 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Cline\VariableKeys;
 
@@ -9,13 +14,11 @@ use Cline\VariableKeys\Enums\PrimaryKeyType;
 use Cline\VariableKeys\Exceptions\ModelNotRegisteredException;
 use Illuminate\Container\Attributes\Singleton;
 
-#[Singleton]
+#[Singleton()]
 final class VariableKeysRegistry
 {
-    /**
-     * @var array<class-string, array{primary_key_type: PrimaryKeyType, morph_type?: MorphType}>
-     */
-    protected array $mappings = [];
+    /** @var array<class-string, array{primary_key_type: PrimaryKeyType, morph_type?: MorphType}> */
+    private array $mappings = [];
 
     /**
      * Register model-to-configuration mappings.
@@ -38,7 +41,7 @@ final class VariableKeysRegistry
      */
     public function getPrimaryKeyType(string $model): PrimaryKeyType
     {
-        if (! isset($this->mappings[$model]['primary_key_type'])) {
+        if (!isset($this->mappings[$model]['primary_key_type'])) {
             throw ModelNotRegisteredException::make($model);
         }
 
@@ -54,7 +57,7 @@ final class VariableKeysRegistry
      */
     public function getMorphType(string $model): MorphType
     {
-        if (! isset($this->mappings[$model]['morph_type'])) {
+        if (!isset($this->mappings[$model]['morph_type'])) {
             throw ModelNotRegisteredException::make($model);
         }
 

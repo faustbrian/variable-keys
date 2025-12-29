@@ -1,26 +1,21 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Cline\VariableKeys\Database\Concerns\HasVariablePrimaryKey;
 use Cline\VariableKeys\Enums\PrimaryKeyType;
 use Cline\VariableKeys\Exceptions\CannotAssignNonStringToUlidException;
 use Cline\VariableKeys\Exceptions\CannotAssignNonStringToUuidException;
 use Cline\VariableKeys\Exceptions\ModelNotRegisteredException;
 use Cline\VariableKeys\Facades\VariableKeys;
-use Illuminate\Database\Eloquent\Model;
+use Cline\VariableKeys\Support\PrimaryKeyGenerator;
+use Cline\VariableKeys\VariableKeysRegistry;
 use Illuminate\Support\Str;
-
-class TestModel extends Model
-{
-    use HasVariablePrimaryKey;
-
-    protected $table = 'test_models';
-
-    protected $guarded = [];
-
-    public $timestamps = false;
-}
+use Tests\Stubs\TestModel;
 
 beforeEach(function (): void {
     VariableKeys::clear();
@@ -135,16 +130,16 @@ describe('creating event generates primary key', function (): void {
         $model = new TestModel();
 
         // Manually trigger the creating event callback
-        TestModel::creating(function (TestModel $m) use ($model): void {
+        TestModel::creating(function (TestModel $m): void {
             // This simulates what happens during model creation
         });
 
         // Simulate what the boot method does
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
-        if (! $primaryKey->isAutoIncrementing() && ! $model->getAttribute('id')) {
+        if (!$primaryKey->isAutoIncrementing() && !$model->getAttribute('id')) {
             $model->setAttribute('id', $primaryKey->value);
         }
 
@@ -159,11 +154,11 @@ describe('creating event generates primary key', function (): void {
 
         $model = new TestModel();
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
-        if (! $primaryKey->isAutoIncrementing() && ! $model->getAttribute('id')) {
+        if (!$primaryKey->isAutoIncrementing() && !$model->getAttribute('id')) {
             $model->setAttribute('id', $primaryKey->value);
         }
 
@@ -178,11 +173,11 @@ describe('creating event generates primary key', function (): void {
 
         $model = new TestModel();
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
-        if (! $primaryKey->isAutoIncrementing() && ! $model->getAttribute('id')) {
+        if (!$primaryKey->isAutoIncrementing() && !$model->getAttribute('id')) {
             $model->setAttribute('id', $primaryKey->value);
         }
 
@@ -194,14 +189,14 @@ describe('creating event generates primary key', function (): void {
             TestModel::class => ['primary_key_type' => PrimaryKeyType::ULID],
         ]);
 
-        $customId = strtolower((string) Str::ulid());
+        $customId = mb_strtolower((string) Str::ulid());
         $model = new TestModel(['id' => $customId]);
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
-        if (! $primaryKey->isAutoIncrementing() && ! $model->getAttribute('id')) {
+        if (!$primaryKey->isAutoIncrementing() && !$model->getAttribute('id')) {
             $model->setAttribute('id', $primaryKey->value);
         }
 
@@ -216,11 +211,11 @@ describe('creating event generates primary key', function (): void {
         $customId = (string) Str::uuid();
         $model = new TestModel(['id' => $customId]);
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
-        if (! $primaryKey->isAutoIncrementing() && ! $model->getAttribute('id')) {
+        if (!$primaryKey->isAutoIncrementing() && !$model->getAttribute('id')) {
             $model->setAttribute('id', $primaryKey->value);
         }
 
@@ -236,13 +231,13 @@ describe('validation errors for type mismatches', function (): void {
 
         $model = new TestModel(['id' => 123]);
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
         $existingValue = $model->getAttribute('id');
 
-        if ($primaryKey->type === PrimaryKeyType::UUID && ! is_string($existingValue)) {
+        if ($primaryKey->type === PrimaryKeyType::UUID && !is_string($existingValue)) {
             throw CannotAssignNonStringToUuidException::forValue($existingValue);
         }
     })->throws(CannotAssignNonStringToUuidException::class);
@@ -254,13 +249,13 @@ describe('validation errors for type mismatches', function (): void {
 
         $model = new TestModel(['id' => 456]);
 
-        $registry = app(\Cline\VariableKeys\VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(TestModel::class);
-        $primaryKey = \Cline\VariableKeys\Support\PrimaryKeyGenerator::generate($primaryKeyType);
+        $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
         $existingValue = $model->getAttribute('id');
 
-        if ($primaryKey->type === PrimaryKeyType::ULID && ! is_string($existingValue)) {
+        if ($primaryKey->type === PrimaryKeyType::ULID && !is_string($existingValue)) {
             throw CannotAssignNonStringToUlidException::forValue($existingValue);
         }
     })->throws(CannotAssignNonStringToUlidException::class);
@@ -270,5 +265,5 @@ describe('unregistered model handling', function (): void {
     test('throws exception when model not registered', function (): void {
         $model = new TestModel();
         $model->getIncrementing();
-    })->throws(ModelNotRegisteredException::class, 'Model [' . TestModel::class . '] is not registered');
+    })->throws(ModelNotRegisteredException::class, 'Model ['.TestModel::class.'] is not registered');
 });

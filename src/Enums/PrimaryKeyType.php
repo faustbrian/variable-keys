@@ -21,8 +21,6 @@ namespace Cline\VariableKeys\Enums;
  * dynamically create primary and foreign key columns based on your application's
  * requirements for uniqueness, performance, and security.
  *
- * @package Cline\VariableKeys
- *
  * @see \Cline\VariableKeys\VariableKeysServiceProvider::registerVariablePrimaryKeyMacro()
  * @see \Cline\VariableKeys\VariableKeysServiceProvider::registerVariableForeignKeyMacro()
  */
@@ -35,8 +33,6 @@ enum PrimaryKeyType: string
      * the database engine. Provides optimal query performance and minimal storage
      * overhead but reveals record count, creation ordering, and allows enumeration
      * attacks. Best suited for internal systems where ID predictability is acceptable.
-     *
-     * @var string
      */
     case ID = 'id';
 
@@ -48,8 +44,6 @@ enum PrimaryKeyType: string
      * sortability, enabling efficient database indexing through improved B-tree
      * locality. Offers better performance than UUIDs while preventing enumeration
      * attacks and maintaining chronological ordering for queries and pagination.
-     *
-     * @var string
      */
     case ULID = 'ulid';
 
@@ -61,8 +55,6 @@ enum PrimaryKeyType: string
      * guarantees suitable for distributed systems and prevents enumeration attacks,
      * but lacks chronological ordering which can lead to fragmented database indexes
      * and reduced query performance compared to time-ordered alternatives like ULIDs.
-     *
-     * @var string
      */
     case UUID = 'uuid';
 }

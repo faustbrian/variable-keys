@@ -29,10 +29,8 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
  * macro calls, improving readability and maintainability when working with
  * applications that support multiple primary key strategies.
  *
- * @package Cline\VariableKeys
- *
- * @see \Cline\VariableKeys\Enums\PrimaryKeyType
- * @see \Cline\VariableKeys\Enums\MorphType
+ * @see PrimaryKeyType
+ * @see MorphType
  */
 final class VariableKeysServiceProvider extends PackageServiceProvider
 {
@@ -43,8 +41,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * The VariableKeysRegistry is automatically bound as a singleton via the
      * #[Singleton] attribute on the class itself, eliminating the need for
      * explicit service container registration here.
-     *
-     * @return void
      */
     #[Override()]
     public function register(): void
@@ -60,8 +56,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * and other package-related functionality.
      *
      * @param Package $package The package configuration instance to configure
-     *
-     * @return void
      */
     public function configurePackage(Package $package): void
     {
@@ -74,8 +68,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * Invoked automatically during the Laravel service provider boot process.
      * Registers three Blueprint macros that extend Laravel's schema builder
      * with dynamic column creation methods based on identifier type enums.
-     *
-     * @return void
      */
     #[Override()]
     public function bootingPackage(): void
@@ -103,8 +95,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * // After - concise macro call
      * $table->variablePrimaryKey($primaryKeyType);
      * ```
-     *
-     * @return void
      */
     private function registerVariablePrimaryKeyMacro(): void
     {
@@ -127,7 +117,7 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
                     PrimaryKeyType::UUID => $this->uuid($column)->primary(),
                     PrimaryKeyType::ID => $this->id($column),
                 };
-            }
+            },
         );
     }
 
@@ -150,8 +140,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * // After - concise macro call
      * $table->variableForeignKey('role_id', $primaryKeyType);
      * ```
-     *
-     * @return void
      */
     private function registerVariableForeignKeyMacro(): void
     {
@@ -166,7 +154,7 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
              *                               the referenced table's primary key type to ensure proper
              *                               foreign key constraint creation and query performance
              *
-             * @return \Illuminate\Database\Schema\ForeignIdColumnDefinition|\Illuminate\Database\Schema\ColumnDefinition
+             * @return \Illuminate\Database\Schema\ColumnDefinition|\Illuminate\Database\Schema\ForeignIdColumnDefinition
              */
             function (string $column, PrimaryKeyType $type) {
                 /** @var Blueprint $this */
@@ -175,7 +163,7 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
                     PrimaryKeyType::UUID => $this->foreignUuid($column),
                     PrimaryKeyType::ID => $this->foreignId($column),
                 };
-            }
+            },
         );
     }
 
@@ -200,8 +188,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * $table->variableMorphs('subject', $morphType);
      * $table->variableMorphs('subject', $morphType, nullable: true);
      * ```
-     *
-     * @return void
      */
     private function registerVariableMorphsMacro(): void
     {
@@ -221,8 +207,6 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
              * @param bool      $nullable Whether the polymorphic relationship columns should allow NULL
              *                            values, enabling optional polymorphic relationships. Defaults
              *                            to false for required relationships
-             *
-             * @return void
              */
             function (string $name, MorphType $type, bool $nullable = false) {
                 /** @var Blueprint $this */
@@ -241,7 +225,7 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
                     MorphType::Numeric => $this->numericMorphs($name),
                     MorphType::String => $this->morphs($name),
                 };
-            }
+            },
         );
     }
 }

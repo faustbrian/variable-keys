@@ -4,3 +4,9 @@ parameters:
         - src
 
     reportUnmatchedIgnoredErrors: true
+
+    ignoreErrors:
+        # Trait is used in test stubs which are not analyzed by PHPStan
+        -
+            identifier: trait.unused
+            path: src/Database/Concerns/HasVariablePrimaryKey.php

@@ -1,11 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Cline\VariableKeys\Support;
 
 use Cline\VariableKeys\Enums\PrimaryKeyType;
 use Illuminate\Support\Str;
+
+use function mb_strtolower;
 
 final class PrimaryKeyGenerator
 {
@@ -17,7 +24,7 @@ final class PrimaryKeyGenerator
         return new PrimaryKeyValue(
             type: $type,
             value: match ($type) {
-                PrimaryKeyType::ULID => strtolower((string) Str::ulid()),
+                PrimaryKeyType::ULID => mb_strtolower((string) Str::ulid()),
                 PrimaryKeyType::UUID => (string) Str::uuid(),
                 PrimaryKeyType::ID => null,
             },
@@ -57,9 +64,11 @@ final class PrimaryKeyGenerator
      */
     public static function enrichPivotDataForIds(PrimaryKeyType $type, array $ids, array $data): array
     {
+        /** @var array<int, array<string, mixed>> $enriched */
         $enriched = [];
 
         foreach ($ids as $id) {
+            /** @var int $id */
             $enriched[$id] = self::enrichPivotData($type, $data);
         }
 

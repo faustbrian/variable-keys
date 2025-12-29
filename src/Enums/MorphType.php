@@ -19,8 +19,6 @@ namespace Cline\VariableKeys\Enums;
  * Used with the variableMorphs Blueprint macro to dynamically create polymorphic
  * relationship columns based on your application's primary key strategy.
  *
- * @package Cline\VariableKeys
- *
  * @see \Cline\VariableKeys\VariableKeysServiceProvider::registerVariableMorphsMacro()
  */
 enum MorphType: string
@@ -32,8 +30,6 @@ enum MorphType: string
      * the appropriate column type based on the related model's primary key.
      * Provides flexibility when polymorphic relationships may point to models
      * with varying primary key types.
-     *
-     * @var string
      */
     case String = 'string';
 
@@ -44,8 +40,6 @@ enum MorphType: string
      * Optimized for models using standard auto-incrementing integer primary keys,
      * providing better performance and smaller index sizes compared to UUID/ULID
      * alternatives when global uniqueness is not required.
-     *
-     * @var string
      */
     case Numeric = 'numeric';
 
@@ -56,8 +50,6 @@ enum MorphType: string
      * relationship foreign key. Provides globally unique, cryptographically random
      * identifiers suitable when models use UUID primary keys and distributed systems
      * require guaranteed uniqueness across multiple databases or servers.
-     *
-     * @var string
      */
     case UUID = 'uuid';
 
@@ -68,8 +60,6 @@ enum MorphType: string
      * foreign key. Combines the benefits of UUIDs (global uniqueness) with
      * time-ordered sortability, providing better database performance through
      * improved B-tree index efficiency and chronological ordering capabilities.
-     *
-     * @var string
      */
     case ULID = 'ulid';
 }

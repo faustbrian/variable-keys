@@ -1,6 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 use Cline\VariableKeys\Enums\PrimaryKeyType;
 use Cline\VariableKeys\Support\PrimaryKeyGenerator;
@@ -42,13 +47,13 @@ describe('generate method', function (): void {
     test('generates lowercase ULIDs', function (): void {
         $result = PrimaryKeyGenerator::generate(PrimaryKeyType::ULID);
 
-        expect($result->value)->toBe(strtolower($result->value));
+        expect($result->value)->toBe(mb_strtolower((string) $result->value));
     });
 
     test('generates lowercase UUIDs', function (): void {
         $result = PrimaryKeyGenerator::generate(PrimaryKeyType::UUID);
 
-        expect($result->value)->toBe(strtolower($result->value));
+        expect($result->value)->toBe(mb_strtolower((string) $result->value));
     });
 });
 

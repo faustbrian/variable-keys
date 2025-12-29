@@ -1,6 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
+/**
+ * Copyright (C) Brian Faust
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Cline\VariableKeys\Database\Concerns;
 
@@ -11,6 +16,10 @@ use Cline\VariableKeys\Support\PrimaryKeyGenerator;
 use Cline\VariableKeys\VariableKeysRegistry;
 use Illuminate\Database\Eloquent\Attributes\Boot;
 use Illuminate\Database\Eloquent\Model;
+
+use function in_array;
+use function is_string;
+use function resolve;
 
 /**
  * Configures primary key type based on runtime registration.
@@ -68,7 +77,7 @@ trait HasVariablePrimaryKey
      */
     public function newUniqueId(): ?string
     {
-        $registry = app(VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(static::class);
 
         return PrimaryKeyGenerator::generate($primaryKeyType)->value;
@@ -85,7 +94,7 @@ trait HasVariablePrimaryKey
      */
     public function uniqueIds(): array
     {
-        $registry = app(VariableKeysRegistry::class);
+        $registry = resolve(VariableKeysRegistry::class);
         $primaryKeyType = $registry->getPrimaryKeyType(static::class);
 
         return match ($primaryKeyType) {
@@ -102,11 +111,11 @@ trait HasVariablePrimaryKey
      * values are compatible with the configured key type, throwing exceptions
      * for type mismatches.
      */
-    #[Boot]
+    #[Boot()]
     protected static function initializePrimaryKeyGeneration(): void
     {
         static::creating(function (Model $model): void {
-            $registry = app(VariableKeysRegistry::class);
+            $registry = resolve(VariableKeysRegistry::class);
             $primaryKeyType = $registry->getPrimaryKeyType($model::class);
             $primaryKey = PrimaryKeyGenerator::generate($primaryKeyType);
 
@@ -118,18 +127,18 @@ trait HasVariablePrimaryKey
             $existingValue = $model->getAttribute($keyName);
 
             // Generate UUID/ULID if no value exists
-            if (! $existingValue) {
+            if (!$existingValue) {
                 $model->setAttribute($keyName, $primaryKey->value);
 
                 return;
             }
 
             // Validate that the existing value is compatible with the key type
-            if ($primaryKey->type === PrimaryKeyType::UUID && ! is_string($existingValue)) {
+            if ($primaryKey->type === PrimaryKeyType::UUID && !is_string($existingValue)) {
                 throw CannotAssignNonStringToUuidException::forValue($existingValue);
             }
 
-            if ($primaryKey->type === PrimaryKeyType::ULID && ! is_string($existingValue)) {
+            if ($primaryKey->type === PrimaryKeyType::ULID && !is_string($existingValue)) {
                 throw CannotAssignNonStringToUlidException::forValue($existingValue);
             }
         });
