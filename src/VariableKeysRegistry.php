@@ -12,9 +12,7 @@ namespace Cline\VariableKeys;
 use Cline\VariableKeys\Enums\MorphType;
 use Cline\VariableKeys\Enums\PrimaryKeyType;
 use Cline\VariableKeys\Exceptions\ModelNotRegisteredException;
-use Illuminate\Container\Attributes\Singleton;
 
-#[Singleton()]
 final class VariableKeysRegistry
 {
     /** @var array<class-string, array{primary_key_type: PrimaryKeyType, morph_type?: MorphType}> */

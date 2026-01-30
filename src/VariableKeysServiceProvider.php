@@ -38,14 +38,15 @@ final class VariableKeysServiceProvider extends PackageServiceProvider
      * Register package services.
      *
      * Calls parent register method to ensure proper package initialization.
-     * The VariableKeysRegistry is automatically bound as a singleton via the
-     * #[Singleton] attribute on the class itself, eliminating the need for
-     * explicit service container registration here.
+     * Manually registers VariableKeysRegistry as a singleton for Laravel 10-11
+     * compatibility (the #[Singleton] attribute was introduced in Laravel 12).
      */
     #[Override()]
     public function register(): void
     {
         parent::register();
+
+        $this->app->singleton(VariableKeysRegistry::class);
     }
 
     /**
