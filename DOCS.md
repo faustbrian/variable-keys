@@ -1,11 +1,13 @@
 ## Table of Contents
 
-1. Overview (`docs/README.md`)
-2. Api Reference (`docs/api-reference.md`)
-3. Configuration Patterns (`docs/configuration-patterns.md`)
-4. Foreign Keys (`docs/foreign-keys.md`)
-5. Polymorphic Relations (`docs/polymorphic-relations.md`)
-6. Primary Keys (`docs/primary-keys.md`)
+1. [Overview](#doc-docs-readme) (`docs/README.md`)
+2. [Api Reference](#doc-docs-api-reference) (`docs/api-reference.md`)
+3. [Configuration Patterns](#doc-docs-configuration-patterns) (`docs/configuration-patterns.md`)
+4. [Foreign Keys](#doc-docs-foreign-keys) (`docs/foreign-keys.md`)
+5. [Polymorphic Relations](#doc-docs-polymorphic-relations) (`docs/polymorphic-relations.md`)
+6. [Primary Keys](#doc-docs-primary-keys) (`docs/primary-keys.md`)
+<a id="doc-docs-readme"></a>
+
 Eliminate repetitive match expressions in your Laravel migrations with type-safe Blueprint macros for variable primary keys, foreign keys, and polymorphic relationships.
 
 ## Requirements
@@ -106,10 +108,12 @@ Variable Keys provides three Blueprint macros and two enums:
 
 ## Next Steps
 
-- [Primary Keys](primary-keys.md) - Configure variable primary keys
-- [Foreign Keys](foreign-keys.md) - Manage foreign key relationships
-- [Polymorphic Relations](polymorphic-relations.md) - Handle polymorphic relationships
-- [Configuration Patterns](configuration-patterns.md) - Centralize key type configuration
+- [Primary Keys](#doc-docs-primary-keys) - Configure variable primary keys
+- [Foreign Keys](#doc-docs-foreign-keys) - Manage foreign key relationships
+- [Polymorphic Relations](#doc-docs-polymorphic-relations) - Handle polymorphic relationships
+- [Configuration Patterns](#doc-docs-configuration-patterns) - Centralize key type configuration
+
+<a id="doc-docs-api-reference"></a>
 
 Complete API documentation for Variable Keys enums and Blueprint macros.
 
@@ -513,6 +517,8 @@ The service provider registers the following Blueprint macros during boot:
 
 No manual registration is required.
 
+<a id="doc-docs-configuration-patterns"></a>
+
 Learn how to configure and manage variable key types using runtime registration for type safety and explicit model configuration.
 
 ## Runtime Registration
@@ -873,6 +879,8 @@ VariableKeys::map([
 ]);
 ```
 
+<a id="doc-docs-foreign-keys"></a>
+
 The `variableForeignKey()` macro creates foreign key columns that match your primary key type, eliminating the need for verbose match expressions.
 
 ## Basic Usage
@@ -1065,6 +1073,8 @@ Schema::create('categories', function (Blueprint $table) {
     $table->timestamps();
 });
 ```
+
+<a id="doc-docs-polymorphic-relations"></a>
 
 The `variableMorphs()` macro eliminates verbose match expressions when defining polymorphic relationship columns, making your migrations cleaner and type-safe.
 
@@ -1330,6 +1340,8 @@ class Post extends Model
     }
 }
 ```
+
+<a id="doc-docs-primary-keys"></a>
 
 The `variablePrimaryKey()` macro replaces verbose match expressions with a clean, type-safe method for creating primary key columns based on your application's configuration.
 
