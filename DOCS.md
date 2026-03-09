@@ -1,11 +1,11 @@
 ## Table of Contents
 
-1. [Overview](#doc-docs-readme) (`docs/README.md`)
-2. [Api Reference](#doc-docs-api-reference) (`docs/api-reference.md`)
-3. [Configuration Patterns](#doc-docs-configuration-patterns) (`docs/configuration-patterns.md`)
-4. [Foreign Keys](#doc-docs-foreign-keys) (`docs/foreign-keys.md`)
-5. [Polymorphic Relations](#doc-docs-polymorphic-relations) (`docs/polymorphic-relations.md`)
-6. [Primary Keys](#doc-docs-primary-keys) (`docs/primary-keys.md`)
+1. [Overview](#doc-docs-readme)
+2. [Api Reference](#doc-docs-api-reference)
+3. [Configuration Patterns](#doc-docs-configuration-patterns)
+4. [Foreign Keys](#doc-docs-foreign-keys)
+5. [Polymorphic Relations](#doc-docs-polymorphic-relations)
+6. [Primary Keys](#doc-docs-primary-keys)
 <a id="doc-docs-readme"></a>
 
 Eliminate repetitive match expressions in your Laravel migrations with type-safe Blueprint macros for variable primary keys, foreign keys, and polymorphic relationships.
